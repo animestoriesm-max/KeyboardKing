@@ -1,0 +1,6 @@
+{
+  "name": "Neon Type",
+  "description": "A neon futuristic typing game with English and Arabic support.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
