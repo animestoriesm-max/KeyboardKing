@@ -132,3 +132,29 @@ dependencies {
   "ksp"(libs.androidx.room.compiler)
   "ksp"(libs.moshi.kotlin.codegen)
 }
+
+tasks.register("generateDebugKeystore") {
+    val keystoreFile = rootProject.file("debug.keystore")
+    outputs.file(keystoreFile)
+    doLast {
+        if (!keystoreFile.exists()) {
+            ProcessBuilder(
+                "keytool", "-genkey", "-v",
+                "-keystore", keystoreFile.absolutePath,
+                "-storepass", "android",
+                "-alias", "androiddebugkey",
+                "-keypass", "android",
+                "-keyalg", "RSA",
+                "-keysize", "2048",
+                "-validity", "10000",
+                "-dname", "C=US, O=Android, CN=Android Debug"
+            ).start().waitFor()
+        }
+    }
+}
+
+tasks.whenTaskAdded {
+    if (name.startsWith("validateSigning")) {
+        dependsOn("generateDebugKeystore")
+    }
+}
